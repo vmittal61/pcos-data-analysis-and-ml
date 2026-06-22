@@ -34,7 +34,7 @@ The XGBoost model achieved the best predictive performance and was hence selecte
 # Feature Importance Analysis
 Feature importance analysis was performed using the XGBoost model to identify the variables contributing most strongly to PCOS prediction.
 
-![Feature Importance](importanceplot.png)
+![Feature Importance](plots/importanceplot.png)
 
 Top predictive variables included:
 
