@@ -12,50 +12,49 @@ df['Avg_Follicle_No'] = pd.cut((df['Follicle No. (L)']+df['Follicle No. (R)'])/2
 df['Cycle(R/I)']=df['Cycle(R/I)'].replace(5, df['Cycle(R/I)'].mode()[0])
 df['Marraige Status (Yrs)']=df['Marraige Status (Yrs)'].fillna(df['Marraige Status (Yrs)'].mean())
 
-"""
-# ---num n cat cols separated
+# num n cat cols separated
 num=df.select_dtypes(include=['int64','float64']).columns
 cat=df.select_dtypes(include=['object']).columns
 print('numerical cols:')
 print(num)
 print('Categorical cols: ')
 print(cat)
-"""
-# ---null filled
+
+# null filled
 df['Fast food (Y/N)']=df['Fast food (Y/N)'].fillna(df['Fast food (Y/N)'].mode()[0])
 
-# ---dropped last col
+# dropped last col
 df.drop(columns=['Unnamed: 44'], inplace=True)
 
-# ---cycle relation
+# cycle relation
 df['Cycle(R/I)']=df['Cycle(R/I)'].replace(5, df['Cycle(R/I)'].mode()[0])
 
-# ---corresponding values for cycle and PCOS
-#print(pd.crosstab(df['Cycle(R/I)'], df['PCOS (Y/N)']))
+# corresponding values for cycle and PCOS
+print(pd.crosstab(df['Cycle(R/I)'], df['PCOS (Y/N)']))
 
-# ---unsuccessful heatmap attempt
+# unsuccessful heatmap attempt
 col=['BMI','PCOS (Y/N)']
 sns.heatmap(df[col].corr(),annot=True, vmin=-0.3)
 
-# ---BMI  VS   PCOS
+# BMI  VS   PCOS
 plt.figure(figsize=(8,5))
 sns.kdeplot(x="BMI", hue="PCOS (Y/N)", data=df, fill=True, common_norm=False, alpha=0.4, linewidth=2)
 
-# ---Updated Cycle data
+# Updated Cycle data
 df['Cycle(R/I)']=df['Cycle(R/I)'].replace(5, df['Cycle(R/I)'].mode()[0])
 
-# ---EVERY CORRELATION with PCOS
+# EVERY CORRELATION with PCOS
 corr = df.corr(numeric_only=True)
 plt.figure(figsize=(12,10))
 sns.heatmap(corr, cmap='coolwarm')
 corr['PCOS (Y/N)'].sort_values(ascending=False)
 
-# ---BMI V Follicle R
+# BMI V Follicle R
 sns.scatterplot(x='BMI', y='Follicle No. (R)', data=df)
 
 
-"""
-# ---BMI AND CYCLE    +  data
+
+# BMI AND CYCLE    +  data
 bmi_cycle=pd.crosstab(
     [df['BMI_data'], df['Cycle(R/I)']],
     df['PCOS (Y/N)'],
@@ -71,7 +70,7 @@ sns.catplot(
 
 
 
-# ---BMI and FOLLICLE  +  data
+# BMI and FOLLICLE  +  data
 bmi_f=pd.crosstab(
     [df['BMI_data'], df['Avg_Follicle_No']],
     df['PCOS (Y/N)'],
@@ -96,7 +95,7 @@ sns.kdeplot(
 
 
 
-# ---BMI n SkinD   +  data
+# BMI n SkinD   +  data
 bmi_skind =pd.crosstab(
     [df['BMI_data'], df['Skin darkening (Y/N)']],
     df['PCOS (Y/N)'],
@@ -111,7 +110,7 @@ sns.catplot(
 
 
 
-# ---HairG+SkinD +  Data
+# HairG+SkinD +  Data
 hairg_skind = pd.crosstab(
     [df['hair growth(Y/N)'], df['Skin darkening (Y/N)']],
     df['PCOS (Y/N)'],
@@ -134,7 +133,7 @@ plt.title('PCOS Prevalence (%)')
 
 
 
-# ---Follicle+skind  +  Data
+# Follicle+skind  +  Data
 f_skind=pd.crosstab(
     [df['Avg_Follicle_No'], df['Skin darkening (Y/N)']],
     df['PCOS (Y/N)'],
@@ -152,7 +151,7 @@ plt.tight_layout()
 
 
 
-# ---Follicle+WeightG  +  Data
+# Follicle+WeightG  +  Data
 f_wg=pd.crosstab(
     [df['Avg_Follicle_No'], df['Weight gain(Y/N)']],
     df['PCOS (Y/N)'],
@@ -170,7 +169,7 @@ plt.tight_layout()
 
 
 
-# ---Follicle+HairG  +  Data
+# Follicle+HairG  +  Data
 f_hg=pd.crosstab(
     [df['Avg_Follicle_No'], df['hair growth(Y/N)']],
     df['PCOS (Y/N)'],
@@ -188,7 +187,7 @@ plt.tight_layout()
 
 
 
-# ---follicle+cycle  +  Data
+# follicle+cycle  +  Data
 f_cycle=pd.crosstab(
     [df['Avg_Follicle_No'], df['Cycle(R/I)']],
     df['PCOS (Y/N)'],
@@ -206,7 +205,7 @@ plt.tight_layout()
 
 
 
-# ---SkinD+HairG  +  Data
+# SkinD+HairG  +  Data
 skind_hg=pd.crosstab(
     [df['Skin darkening (Y/N)'], df['hair growth(Y/N)']],
     df['PCOS (Y/N)'],
@@ -224,7 +223,7 @@ plt.tight_layout()
 
 
 
-# ---SkinD+Cycle  +  Data
+# SkinD+Cycle  +  Data
 skind_cycle=pd.crosstab(
     [df['Skin darkening (Y/N)'], df['Cycle(R/I)']],
     df['PCOS (Y/N)'],
@@ -255,7 +254,7 @@ a=sns.catplot(
     data=df)
 sns.move_legend(a, loc='upper right')
 plt.tight_layout()
-"""
+
 
 age_cycle=pd.crosstab(
     [df[' Age (yrs)'], df['Cycle(R/I)']],
@@ -270,7 +269,6 @@ pivot = df.pivot_table(
 sns.heatmap(pivot, cmap='Blues', annot=True)
 plt.show()
 
-"""
 
 df.to_csv("PCOS_cleaned.csv", index=False)
 
@@ -376,4 +374,3 @@ print(cm)
 from sklearn.metrics import classification_report
 print(classification_report(y_test, predictions))
 
-"""
